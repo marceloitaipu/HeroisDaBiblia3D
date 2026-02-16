@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Jogo educativo 3D com 5 mundos baseados em histórias bíblicas">
+    <meta name="theme-color" content="#3498db">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Heróis Bíblia">
+    
+    <title>Heróis da Bíblia 3D</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .build-instructions {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .build-instructions h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .build-instructions ol {
+            margin-left: 20px;
+        }
+        
+        .build-instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .install-button {
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 2px solid white;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .install-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .install-button.show {
+            display: inline-block;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .feature-emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Heróis da Bíblia 3D</h1>
+        <p>Jogo educativo com 5 mundos baseados em histórias bíblicas</p>
+        
+        <button id="installButton" class="install-button">
+            📱 Instalar no Celular
+        </button>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-emoji">🏃</div>
+                <strong>Runner</strong>
+                <p>Modo corrida</p>
+            </div>
+            <div class="feature">
+                <div class="feature-emoji">⚔️</div>
+                <strong>Boss Battle</strong>
+                <p>Derrote Golias</p>
+            </div>
+            <div class="feature">
+                <div class="feature-emoji">🧩</div>
+                <strong>Puzzles</strong>
+                <p>2 desafios</p>
+            </div>
+            <div class="feature">
+                <div class="feature-emoji">💖</div>
+                <strong>Coleta</strong>
+                <p>Colete corações</p>
+            </div>
+        </div>
+        
+        <div class="build-instructions">
+            <h2>📦 Como fazer o Build do Unity</h2>
+            <ol>
+                <li>Abra o projeto no Unity 2022.3 LTS</li>
+                <li>File → Build Settings → WebGL</li>
+                <li>Player Settings:
+                    <ul>
+                        <li>Resolution: Default Canvas Width: 1080px</li>
+                        <li>Resolution: Default Canvas Height: 1920px</li>
+                        <li>Compression: Brotli</li>
+                    </ul>
+                </li>
+                <li>Build na pasta <strong>docs/</strong></li>
+                <li>Faça commit e push para GitHub</li>
+                <li>Settings → Pages → Deploy from main/docs</li>
+            </ol>
+        </div>
+        
+        <p style="margin-top: 20px; opacity: 0.7; font-size: 0.9em;">
+            ⚠️ Após fazer o build, esta página será substituída pelo jogo
+        </p>
+    </div>
+    
+    <script>
+        // PWA Install
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.classList.add('show');
+        });
+        
+        installButton.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                alert('Para instalar no iOS: toque em Compartilhar e depois "Adicionar à Tela de Início"');
+                return;
+            }
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Install prompt: ${outcome}`);
+            deferredPrompt = null;
+            installButton.classList.remove('show');
+        });
+        
+        // Registrar Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('Service Worker registrado:', reg.scope))
+                    .catch(err => console.log('Service Worker falhou:', err));
+            });
+        }
+    </script>
+</body>
+</html>
