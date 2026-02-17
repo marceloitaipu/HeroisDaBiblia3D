@@ -1,6 +1,6 @@
 # Heróis da Bíblia 3D — Turbo (Portrait)
 
-![Unity](https://img.shields.io/badge/Unity-2022.3_LTS-black?logo=unity)
+![Unity](https://img.shields.io/badge/Unity-6.0-black?logo=unity)
 ![C#](https://img.shields.io/badge/C%23-10.0-blue?logo=csharp)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -44,7 +44,7 @@ Jogo educativo 3D para mobile (modo retrato) com 5 mundos baseados em histórias
 ## 🚀 Como Abrir o Projeto
 
 ### Requisitos
-- Unity 2022.3 LTS ou superior
+- Unity 6 (6000.3.8f1) ou superior
 - 2GB+ RAM disponível
 - Suporte a C# 9.0+
 

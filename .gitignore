@@ -64,3 +64,7 @@ Thumbs.db
 
 # WebGL Build (exceto docs/ que será deployado)
 # docs/ será mantido para GitHub Pages
+
+# Build logs
+*.log
+build-*.log

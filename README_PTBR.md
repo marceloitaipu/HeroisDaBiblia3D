@@ -1,6 +1,6 @@
 # Heróis da Bíblia 3D — Turbo (Portrait)
 
-Projeto Unity (2022.3 LTS) com 5 mundos:
+Projeto Unity 6 (6000.3.8f1) com 5 mundos:
 1) Noé (Runner)
 2) Davi x Golias (Boss com pedras + timing)
 3) Jonas (Puzzle)

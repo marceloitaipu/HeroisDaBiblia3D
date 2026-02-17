@@ -4,7 +4,7 @@
 
 ### 1. Primeira Execução
 ```
-1. Abra o projeto no Unity 2022.3 LTS
+1. Abra o projeto no Unity 6 (6000.3.8f1)
 2. Aguarde a compilação dos scripts
 3. Abra Assets/Scenes/Main.unity
 4. Clique em Play
