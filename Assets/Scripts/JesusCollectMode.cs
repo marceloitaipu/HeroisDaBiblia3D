@@ -30,6 +30,7 @@ namespace HeroisDaBiblia3D
         private Rigidbody _rb;
         private int _lane = 1; // Faixa atual (0=esquerda, 1=centro, 2=direita)
         private float _nextCollectibleZ;
+        private float _nextDecoZ;
         private float _distance = 0f;
 
         void Awake()
@@ -54,6 +55,7 @@ namespace HeroisDaBiblia3D
             
             transform.position = new Vector3(0, 1.1f, 2);
             _nextCollectibleZ = 15f;
+            _nextDecoZ = 5f;
             
             // Spawna batch inicial de coletáveis
             SpawnBatchAhead(spawnDistance);
@@ -82,6 +84,18 @@ namespace HeroisDaBiblia3D
             {
                 SpawnCollectible(_nextCollectibleZ);
                 _nextCollectibleZ += 5.5f;
+            }
+
+            // Spawna decorações laterais
+            var env = EnvironmentBuilder.Instance;
+            if (env != null)
+            {
+                while (_nextDecoZ < currentZ + 100f)
+                {
+                    env.SpawnSideDecorations(_nextDecoZ);
+                    _nextDecoZ += 10f;
+                }
+                env.CleanupBehindZ(currentZ);
             }
 
             // Remove objetos que ficaram para trás do jogador
@@ -117,6 +131,8 @@ namespace HeroisDaBiblia3D
                 {
                     hearts++;
                     AudioManager.I?.Beep();
+                    EnvironmentBuilder.PlayBurstEffect(
+                        other.transform.position, new Color(1f, 0.4f, 0.55f), 4);
                     
                     // Verifica se atingiu a meta
                     if (hearts >= heartsTarget)
@@ -189,9 +205,9 @@ namespace HeroisDaBiblia3D
             var collectible = go.AddComponent<SimpleCollectible>();
             collectible.type = CollectibleType.Coracao;
             
-            var material = new Material(GameConstants.SafeStandardShader);
-            material.color = new Color(1f, 0.3f, 0.5f, 1f); // Rosa/vermelho para corações
-            go.GetComponent<Renderer>().material = material;
+            go.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                new Color(1f, 0.32f, 0.48f), 0.1f, 0.5f,
+                new Color(0.6f, 0.12f, 0.22f));
             
             var collider = go.GetComponent<SphereCollider>();
             if (collider != null)

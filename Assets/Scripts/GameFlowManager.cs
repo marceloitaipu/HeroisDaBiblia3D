@@ -57,14 +57,43 @@ namespace HeroisDaBiblia3D
 
             var lightGo = new GameObject("Directional Light");
             var light = lightGo.AddComponent<Light>(); light.type = LightType.Directional; light.intensity = 1.15f;
-            lightGo.transform.rotation = Quaternion.Euler(55, -35, 0);
+            light.shadows = LightShadows.Soft;
+            light.shadowStrength = 0.45f;
+            lightGo.transform.rotation = Quaternion.Euler(50, -30, 0);
 
+            // Chão amplo (cobre 350 m de pista + bordas para decorações)
             var ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
             ground.name = "Ground";
-            ground.transform.position = new Vector3(0, 0, 45);
-            ground.transform.localScale = new Vector3(0.35f, 1f, 18f);
-            var gmat = new Material(GameConstants.SafeStandardShader); gmat.color = new Color(0.70f, 0.86f, 0.72f);
+            ground.transform.position = new Vector3(0, 0, 160);
+            ground.transform.localScale = new Vector3(2.5f, 1f, 38f);
+            var gmat = EnvironmentBuilder.CreateMat(new Color(0.40f, 0.68f, 0.35f), 0f, 0.12f);
             ground.GetComponent<Renderer>().material = gmat;
+
+            // Estrada central (caminho visual)
+            var road = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            road.name = "Road";
+            road.transform.position = new Vector3(0, 0.015f, 160);
+            road.transform.localScale = new Vector3(5.2f, 0.02f, 370f);
+            road.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                new Color(0.55f, 0.48f, 0.35f), 0f, 0.08f);
+            Destroy(road.GetComponent<Collider>());
+
+            // Linhas das lanes
+            for (int li = 0; li < 2; li++)
+            {
+                float lx = (li == 0) ? -1f : 1f;
+                var lane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                lane.name = $"LaneLine{li}";
+                lane.transform.position = new Vector3(lx, 0.025f, 160);
+                lane.transform.localScale = new Vector3(0.06f, 0.012f, 370f);
+                lane.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                    new Color(0.78f, 0.72f, 0.58f), 0f, 0.05f);
+                Destroy(lane.GetComponent<Collider>());
+            }
+
+            // --- Environment Builder ---
+            var envGo = new GameObject("EnvironmentBuilder");
+            envGo.AddComponent<EnvironmentBuilder>();
 
             // --- Player ---
 
@@ -90,7 +119,13 @@ namespace HeroisDaBiblia3D
 
             var camGo = new GameObject("Main Camera"); camGo.tag = "MainCamera";
             var cam = camGo.AddComponent<Camera>(); cam.fieldOfView = 58;
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(0.53f, 0.75f, 0.95f);
             var follow = camGo.AddComponent<PortraitFollowCamera>(); follow.target = _player;
+
+            // Inicializa EnvironmentBuilder com câmera e luz
+            if (EnvironmentBuilder.Instance != null)
+                EnvironmentBuilder.Instance.Initialize(cam, light);
 
             // --- UI ---
 
@@ -147,6 +182,7 @@ namespace HeroisDaBiblia3D
             State = GameState.Home;
             _ui.ShowHome();
             SetupPause(null, null); // Desativa pause no menu
+            EnvironmentBuilder.Instance?.ApplyTheme(0);
         }
 
         public void GoMap()
@@ -155,6 +191,7 @@ namespace HeroisDaBiblia3D
             State = GameState.Map;
             _ui.ShowMap();
             SetupPause(null, null);
+            EnvironmentBuilder.Instance?.ApplyTheme(0);
         }
 
         #endregion
@@ -164,6 +201,7 @@ namespace HeroisDaBiblia3D
         public void StartRunnerNoe()
         {
             Cleanup(); State = GameState.RunnerNoe;
+            EnvironmentBuilder.Instance?.ApplyTheme(1);
             _ui.ShowHud(L("world1_title", "Mundo 1 — Noé e a Arca"));
 
             _runner.enabled = true;
@@ -217,6 +255,7 @@ namespace HeroisDaBiblia3D
             }
 
             Cleanup(); State = GameState.BossDavi;
+            EnvironmentBuilder.Instance?.ApplyTheme(2);
             _ui.ShowHud(L("world2_title", "Mundo 2 — Davi e Golias"));
 
             _boss.enabled = true;
@@ -340,6 +379,7 @@ namespace HeroisDaBiblia3D
         public void StartJesusGameplay()
         {
             Cleanup(); State = GameState.JesusGameplay;
+            EnvironmentBuilder.Instance?.ApplyTheme(5);
             _ui.ShowHud(L("world5_title", "Mundo 5 — Jesus (Coleta)"));
 
             _jesus.enabled = true;
@@ -566,6 +606,7 @@ namespace HeroisDaBiblia3D
             foreach (var o in GameObject.FindGameObjectsWithTag("Obstacle")) Destroy(o);
             foreach (var c in GameObject.FindGameObjectsWithTag("Collectible")) Destroy(c);
             foreach (var b in GameObject.FindGameObjectsWithTag("Boss")) Destroy(b);
+            EnvironmentBuilder.Instance?.CleanupAllDecorations();
         }
 
         #endregion

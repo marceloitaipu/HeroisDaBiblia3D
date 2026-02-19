@@ -1,135 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1a1a2e">
-    <meta name="description" content="Jogo educativo 3D com 5 mundos baseados em historias biblicas">
-    <title>Herois da Biblia 3D</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="manifest" href="manifest.json">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-      <div id="loading-content">
-        <div id="loading-icon">&#9775;</div>
-        <h1 id="loading-title">Herois da Biblia 3D</h1>
-        <p id="loading-subtitle">Preparando a aventura...</p>
-        <div id="progress-container">
-          <div id="progress-bar"></div>
-        </div>
-        <p id="progress-text">0%</p>
-      </div>
-      <div id="loading-particles"></div>
-    </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a0a2e">
+  <title>Heróis da Bíblia 3D</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;overflow:hidden;background:#1a0a2e;font-family:'Segoe UI',system-ui,sans-serif}
+    #loading-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#1a0a2e 0%,#16213e 50%,#0f3460 100%);z-index:100;transition:opacity .5s}
+    #loading-screen.hidden{opacity:0;pointer-events:none}
+    .icon-glow{width:100px;height:100px;border-radius:50%;
+      background:radial-gradient(circle,#ffd700 0%,#ff8c00 60%,transparent 70%);
+      animation:pulse 2s ease-in-out infinite;margin-bottom:30px;
+      display:flex;align-items:center;justify-content:center;font-size:48px}
+    @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 30px rgba(255,215,0,.4)}
+      50%{transform:scale(1.1);box-shadow:0 0 60px rgba(255,215,0,.7)}}
+    .title{color:#ffd700;font-size:28px;font-weight:700;text-align:center;
+      text-shadow:0 0 20px rgba(255,215,0,.5);margin-bottom:8px;letter-spacing:1px}
+    .subtitle{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:40px}
+    .progress-container{width:280px;max-width:80vw;height:8px;background:rgba(255,255,255,.1);
+      border-radius:4px;overflow:hidden;margin-bottom:15px}
+    .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff8c00);
+      border-radius:4px;transition:width .3s}
+    .progress-text{color:rgba(255,255,255,.7);font-size:13px}
+    .tip{position:absolute;bottom:30px;color:rgba(255,255,255,.4);font-size:11px;text-align:center;padding:0 20px}
+    #unity-canvas{width:100%!important;height:100%!important;display:block;background:#1a0a2e}
+    #unity-container{width:100%;height:100%;position:fixed;inset:0}
+    #unity-warning{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:200;max-width:90vw}
+  </style>
+</head>
+<body>
+  <div id="loading-screen">
+    <div class="icon-glow">&#9775;</div>
+    <div class="title">Heróis da Bíblia 3D</div>
+    <div class="subtitle">Aventura Bíblica</div>
+    <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="progress-text" id="progress-text">Carregando... 0%</div>
+    <div class="tip">Dica: Jogue em modo retrato para melhor experiência</div>
+  </div>
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+  </div>
+  <div id="unity-warning"></div>
 
-    <!-- Game Container -->
-    <div id="unity-container">
-      <canvas id="unity-canvas" tabindex="-1"></canvas>
-      <div id="unity-warning"></div>
-      <!-- Floating Controls -->
-      <div id="game-controls">
-        <button id="fullscreen-btn" title="Tela cheia">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
-          </svg>
-        </button>
-      </div>
-    </div>
+  <script>
+    if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(function(){});}
 
-    <script>
-      const canvas = document.querySelector("#unity-canvas");
-      const loadingScreen = document.querySelector("#loading-screen");
-      const progressBar = document.querySelector("#progress-bar");
-      const progressText = document.querySelector("#progress-text");
-      const loadingSubtitle = document.querySelector("#loading-subtitle");
+    var canvas = document.getElementById('unity-canvas');
+    function unityShowBanner(msg,type){
+      var w=document.getElementById('unity-warning');
+      var d=document.createElement('div');
+      d.innerHTML=msg;
+      d.style.cssText='padding:10px;margin:4px;border-radius:6px;color:#fff;font-size:13px;'
+        +(type==='error'?'background:#c0392b':'background:#f39c12');
+      w.appendChild(d);
+      if(type!=='error') setTimeout(function(){w.removeChild(d)},5000);
+    }
 
-      function unityShowBanner(msg, type) {
-        const warningBanner = document.querySelector("#unity-warning");
-        const div = document.createElement('div');
-        div.innerHTML = msg;
-        div.className = 'banner-msg ' + (type || 'info');
-        warningBanner.appendChild(div);
-        warningBanner.style.display = 'block';
-        if (type !== 'error') {
-          setTimeout(() => {
-            div.remove();
-            if (!warningBanner.children.length) warningBanner.style.display = 'none';
-          }, 5000);
-        }
-      }
+    var buildUrl="Build";
+    var config={
+      arguments:[],
+      dataUrl:buildUrl+"/docs.data",
+      frameworkUrl:buildUrl+"/docs.framework.js",
+      codeUrl:buildUrl+"/docs.wasm",
+      streamingAssetsUrl:"StreamingAssets",
+      companyName:"DefaultCompany",
+      productName:"HeroisDaBiblia3D",
+      productVersion:"2.0",
+      showBanner:unityShowBanner,
+      devicePixelRatio: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 1 : undefined
+    };
 
-      const buildUrl = "Build";
-      const config = {
-        arguments: [],
-        dataUrl: buildUrl + "/docs.data",
-        frameworkUrl: buildUrl + "/docs.framework.js",
-        codeUrl: buildUrl + "/docs.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "HeroisDaBiblia3D",
-        productVersion: "1.0",
-        showBanner: unityShowBanner,
-      };
-
-      // Responsive canvas sizing
-      function resizeCanvas() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        canvas.style.width = w + "px";
-        canvas.style.height = h + "px";
-      }
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-
-      // Loading messages
-      const loadingMessages = [
-        "Preparando a aventura...",
-        "Carregando mundos biblicos...",
-        "Invocando os herois...",
-        "Construindo a arca...",
-        "Atravessando o Mar Vermelho...",
-        "Quase la..."
-      ];
-
-      document.querySelector("#loading-screen").style.display = "flex";
-
-      const script = document.createElement("script");
-      script.src = buildUrl + "/docs.loader.js";
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          const pct = Math.round(100 * progress);
-          progressBar.style.width = pct + "%";
-          progressText.textContent = pct + "%";
-          const msgIndex = Math.min(Math.floor(progress * loadingMessages.length), loadingMessages.length - 1);
-          loadingSubtitle.textContent = loadingMessages[msgIndex];
-        }).then((unityInstance) => {
-          // Fade out loading screen
-          loadingScreen.style.opacity = "0";
-          setTimeout(() => { loadingScreen.style.display = "none"; }, 600);
-
-          document.querySelector("#fullscreen-btn").onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }).catch((message) => {
-          loadingSubtitle.textContent = "Erro ao carregar o jogo";
-          progressBar.style.background = "#e74c3c";
-          console.error(message);
-        });
-      };
-      document.body.appendChild(script);
-
-      // Register service worker
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-      }
-    </script>
-  </body>
+    var script=document.createElement("script");
+    script.src=buildUrl+"/docs.loader.js";
+    script.onload=function(){
+      createUnityInstance(canvas,config,function(p){
+        var pct=Math.round(p*100);
+        document.getElementById('progress-bar').style.width=pct+'%';
+        document.getElementById('progress-text').textContent='Carregando... '+pct+'%';
+      }).then(function(instance){
+        document.getElementById('loading-screen').classList.add('hidden');
+        setTimeout(function(){document.getElementById('loading-screen').style.display='none'},600);
+      }).catch(function(msg){
+        document.getElementById('progress-text').textContent='Erro: '+msg;
+        document.getElementById('progress-text').style.color='#e74c3c';
+      });
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
 </html>

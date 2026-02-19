@@ -63,6 +63,7 @@ namespace HeroisDaBiblia3D
         private Vector3 _baseC; // Centro original do collider
         private float _nextObstacleZ; // Posição Z do próximo obstáculo a spawnar
         private float _nextCollectibleZ; // Posição Z do próximo coletável a spawnar
+        private float _nextDecoZ; // Posição Z da próxima decoração
         
         #endregion
 
@@ -96,6 +97,18 @@ namespace HeroisDaBiblia3D
             {
                 SpawnCollectible(_nextCollectibleZ);
                 _nextCollectibleZ += 5.8f;
+            }
+
+            // Spawna decorações laterais
+            var env = EnvironmentBuilder.Instance;
+            if (env != null)
+            {
+                while (_nextDecoZ < currentZ + 100f)
+                {
+                    env.SpawnSideDecorations(_nextDecoZ);
+                    _nextDecoZ += 10f;
+                }
+                env.CleanupBehindZ(currentZ);
             }
 
             // Remove objetos que ficaram para trás do jogador
@@ -165,6 +178,12 @@ namespace HeroisDaBiblia3D
                         coracoes++;
                 }
 
+                // Efeito visual de coleta
+                Color fx = (collectible != null && collectible.type == CollectibleType.Pergaminho)
+                    ? new Color(1f, 0.9f, 0.3f)
+                    : new Color(1f, 0.4f, 0.55f);
+                EnvironmentBuilder.PlayBurstEffect(other.transform.position, fx, 4);
+
                 Destroy(other.gameObject);
                 AudioManager.I?.Beep();
                 return;
@@ -172,6 +191,7 @@ namespace HeroisDaBiblia3D
 
             if (other.CompareTag("Obstacle"))
             {
+                EnvironmentBuilder.PlayBurstEffect(transform.position, new Color(1f, 0.3f, 0.2f), 5);
                 HitObstacle();
             }
         }
@@ -200,6 +220,7 @@ namespace HeroisDaBiblia3D
 
             _nextObstacleZ = 25f;
             _nextCollectibleZ = 27f;
+            _nextDecoZ = 5f;
 
             // Spawna batch inicial de objetos
             SpawnBatchAhead(90f);
@@ -347,11 +368,19 @@ namespace HeroisDaBiblia3D
             go.name = "Obstacle";
             go.tag = "Obstacle";
             go.transform.position = new Vector3(GameConstants.LanesX[lane], 0.6f, z);
-            go.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            var material = new Material(GameConstants.SafeStandardShader);
-            material.color = new Color(0.45f, 0.35f, 0.25f);
-            go.GetComponent<Renderer>().material = material;
+            // Variação de escala para interesse visual
+            float sx = UnityEngine.Random.Range(1.0f, 1.35f);
+            float sy = UnityEngine.Random.Range(0.9f, 1.4f);
+            float sz = UnityEngine.Random.Range(0.8f, 1.2f);
+            go.transform.localScale = new Vector3(sx, sy, sz);
+            go.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(-8f, 8f), 0);
+
+            // Material melhorado com variação de cor
+            float brown = UnityEngine.Random.Range(0.35f, 0.52f);
+            Color obsColor = new Color(brown + 0.08f, brown, brown - 0.08f);
+            go.GetComponent<Renderer>().material =
+                EnvironmentBuilder.CreateMat(obsColor, 0.05f, 0.25f);
 
             go.GetComponent<BoxCollider>().isTrigger = true;
         }
@@ -374,12 +403,20 @@ namespace HeroisDaBiblia3D
                 ? CollectibleType.Pergaminho
                 : CollectibleType.Coracao;
 
-            var material = new Material(GameConstants.SafeStandardShader);
-            material.color = (collectible.type == CollectibleType.Pergaminho)
-                ? new Color(1f, 0.92f, 0.45f)  // Dourado para pergaminhos
-                : new Color(1f, 0.45f, 0.55f); // Rosa para corações
+            Color baseColor, emitColor;
+            if (collectible.type == CollectibleType.Pergaminho)
+            {
+                baseColor = new Color(1f, 0.88f, 0.35f);   // Dourado
+                emitColor = new Color(0.6f, 0.5f, 0.1f);   // Brilho dourado
+            }
+            else
+            {
+                baseColor = new Color(1f, 0.38f, 0.52f);   // Rosa
+                emitColor = new Color(0.6f, 0.15f, 0.25f); // Brilho rosa
+            }
 
-            go.GetComponent<Renderer>().material = material;
+            go.GetComponent<Renderer>().material =
+                EnvironmentBuilder.CreateMat(baseColor, 0.15f, 0.55f, emitColor);
         }
 
         #endregion

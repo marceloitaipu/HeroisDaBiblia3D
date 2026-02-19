@@ -116,6 +116,7 @@ namespace HeroisDaBiblia3D
                     _stones++;
                     _bossIntimidation = 0f; // Reseta intimidação ao coletar pedra
                     AudioManager.I?.Beep();
+                    EnvironmentBuilder.PlayBurstEffect(other.transform.position, new Color(0.7f, 0.7f, 0.7f), 3);
                 }
 
                 Destroy(other.gameObject);
@@ -208,8 +209,9 @@ namespace HeroisDaBiblia3D
                     // Errou - feedback visual no boss
                     if (_boss != null)
                     {
-                        _boss.GetComponent<Renderer>().material.color = 
-                            new Color(1f, 0.75f, 0.45f);
+                        var bodyRenderer = _boss.GetComponentInChildren<Renderer>();
+                        if (bodyRenderer != null)
+                            bodyRenderer.material.color = new Color(1f, 0.75f, 0.45f);
                         Invoke(nameof(ResetBossColor), 0.35f);
                     }
                 }
@@ -269,29 +271,69 @@ namespace HeroisDaBiblia3D
             foreach (var collectible in GameObject.FindGameObjectsWithTag("Collectible"))
                 Destroy(collectible);
 
-            // Cria o boss (Golias)
-            _boss = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            _boss.name = "Golias";
+            // Cria o boss (Golias) — corpo composto para aparência mais robusta
+            _boss = new GameObject("Golias");
             _boss.tag = "Boss";
-            _boss.transform.position = new Vector3(0, 2.2f, 18f);
-            _boss.transform.localScale = new Vector3(2.35f, 2.35f, 2.35f);
+            _boss.transform.position = new Vector3(0, 0, 18f);
 
-            var bossMaterial = new Material(GameConstants.SafeStandardShader);
-            bossMaterial.color = new Color(0.35f, 0.45f, 0.75f);
-            _boss.GetComponent<Renderer>().material = bossMaterial;
+            // Corpo principal
+            var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            body.transform.SetParent(_boss.transform);
+            body.transform.localPosition = new Vector3(0, 2.2f, 0);
+            body.transform.localScale = new Vector3(2.35f, 2.35f, 2.35f);
+            body.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                new Color(0.30f, 0.40f, 0.72f), 0.2f, 0.4f,
+                new Color(0.08f, 0.12f, 0.25f));
+            Destroy(body.GetComponent<Collider>());
 
-            // Cria o escudo
+            // Cabeça
+            var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            head.transform.SetParent(_boss.transform);
+            head.transform.localPosition = new Vector3(0, 4.8f, 0);
+            head.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+            head.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                new Color(0.62f, 0.50f, 0.38f), 0.05f, 0.3f);
+            Destroy(head.GetComponent<Collider>());
+
+            // Ombros
+            for (int i = -1; i <= 1; i += 2)
+            {
+                var shoulder = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                shoulder.transform.SetParent(_boss.transform);
+                shoulder.transform.localPosition = new Vector3(i * 1.6f, 3.6f, 0);
+                shoulder.transform.localScale = new Vector3(1.0f, 0.8f, 0.8f);
+                shoulder.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                    new Color(0.32f, 0.42f, 0.74f), 0.15f, 0.35f);
+                Destroy(shoulder.GetComponent<Collider>());
+            }
+
+            // Cria o escudo — mais imponente
             var shield = GameObject.CreatePrimitive(PrimitiveType.Cube);
             shield.name = "Escudo";
             shield.tag = "Obstacle";
-            shield.transform.position = new Vector3(2.6f, 1.2f, 14f);
-            shield.transform.localScale = new Vector3(1.6f, 2.2f, 0.6f);
-
-            var shieldMaterial = new Material(GameConstants.SafeStandardShader);
-            shieldMaterial.color = new Color(0.35f, 0.35f, 0.35f);
-            shield.GetComponent<Renderer>().material = shieldMaterial;
-
+            shield.transform.position = new Vector3(2.6f, 1.5f, 14f);
+            shield.transform.localScale = new Vector3(1.6f, 2.4f, 0.5f);
+            shield.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                new Color(0.42f, 0.38f, 0.32f), 0.45f, 0.55f);
             shield.GetComponent<BoxCollider>().isTrigger = true;
+
+            // Decoração da arena — rochas nos lados
+            for (int i = 0; i < 6; i++)
+            {
+                float side = (i % 2 == 0) ? -1f : 1f;
+                float z = 4f + i * 3.5f;
+                var rock = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                rock.name = "Deco_ArenaRock";
+                rock.tag = "Boss"; // Para cleanup
+                rock.transform.position = new Vector3(side * UnityEngine.Random.Range(5f, 7f), 0.3f, z);
+                float rs = UnityEngine.Random.Range(0.5f, 1.2f);
+                rock.transform.localScale = new Vector3(rs * 1.1f, rs * 0.5f, rs * 0.8f);
+                rock.transform.rotation = Quaternion.Euler(
+                    UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(0, 360), 0);
+                rock.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                    new Color(0.55f, 0.48f, 0.38f), 0.08f, 0.25f);
+                Destroy(rock.GetComponent<Collider>());
+            }
 
             // Spawna pedras para coletar
             for (int i = 0; i < 12; i++)
@@ -308,9 +350,9 @@ namespace HeroisDaBiblia3D
                 var collectible = stone.AddComponent<SimpleCollectible>();
                 collectible.type = CollectibleType.Pedra;
 
-                var stoneMaterial = new Material(GameConstants.SafeStandardShader);
-                stoneMaterial.color = new Color(0.55f, 0.55f, 0.55f);
-                stone.GetComponent<Renderer>().material = stoneMaterial;
+                stone.GetComponent<Renderer>().material = EnvironmentBuilder.CreateMat(
+                    new Color(0.60f, 0.58f, 0.55f), 0.12f, 0.35f,
+                    new Color(0.15f, 0.15f, 0.15f));
             }
         }
 
@@ -322,9 +364,14 @@ namespace HeroisDaBiblia3D
             if (_boss == null)
                 return;
 
-            _boss.GetComponent<Renderer>().material.color = 
-                new Color(0.45f, 0.95f, 0.65f); // Verde ao ser atingido
+            var bodyRenderer = _boss.GetComponentInChildren<Renderer>();
+            if (bodyRenderer != null)
+                bodyRenderer.material.color = new Color(0.45f, 0.95f, 0.65f);
             
+            EnvironmentBuilder.PlayBurstEffect(
+                _boss.transform.position + Vector3.up * 2f,
+                new Color(0.4f, 0.95f, 0.6f), 6);
+
             Invoke(nameof(ResetBossColor), 0.35f);
         }
 
@@ -336,8 +383,9 @@ namespace HeroisDaBiblia3D
             if (_boss == null)
                 return;
 
-            _boss.GetComponent<Renderer>().material.color = 
-                new Color(0.35f, 0.45f, 0.75f); // Cor original
+            var bodyRenderer = _boss.GetComponentInChildren<Renderer>();
+            if (bodyRenderer != null)
+                bodyRenderer.material.color = new Color(0.30f, 0.40f, 0.72f);
         }
 
         #endregion
