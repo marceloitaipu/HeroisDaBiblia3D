@@ -1,10 +1,11 @@
-const CACHE_NAME = 'herois-biblia-v2.0.0';
+const CACHE_NAME = 'herois-biblia-v3.0.0';
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './TemplateData/style.css',
+  './TemplateData/favicon.ico',
+  './Build/docs.loader.js'
 ];
 
 // Install Service Worker

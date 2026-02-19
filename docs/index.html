@@ -1,229 +1,135 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="Jogo educativo 3D com 5 mundos baseados em histórias bíblicas">
-    <meta name="theme-color" content="#3498db">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Heróis Bíblia">
-    
-    <title>Heróis da Bíblia 3D</title>
-    
-    <!-- PWA Manifest -->
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Jogo educativo 3D com 5 mundos baseados em historias biblicas">
+    <title>Herois da Biblia 3D</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 600px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-        
-        .build-instructions {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 30px 0;
-            text-align: left;
-        }
-        
-        .build-instructions h2 {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
-        .build-instructions ol {
-            margin-left: 20px;
-        }
-        
-        .build-instructions li {
-            margin-bottom: 10px;
-        }
-        
-        .install-button {
-            display: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: 2px solid white;
-            padding: 15px 40px;
-            font-size: 1.2em;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .install-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .install-button.show {
-            display: inline-block;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-        }
-        
-        .feature-emoji {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2em;
-            }
-            
-            .container {
-                padding: 30px 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎮 Heróis da Bíblia 3D</h1>
-        <p>Jogo educativo com 5 mundos baseados em histórias bíblicas</p>
-        
-        <button id="installButton" class="install-button">
-            📱 Instalar no Celular
-        </button>
-        
-        <div class="features">
-            <div class="feature">
-                <div class="feature-emoji">🏃</div>
-                <strong>Runner</strong>
-                <p>Modo corrida</p>
-            </div>
-            <div class="feature">
-                <div class="feature-emoji">⚔️</div>
-                <strong>Boss Battle</strong>
-                <p>Derrote Golias</p>
-            </div>
-            <div class="feature">
-                <div class="feature-emoji">🧩</div>
-                <strong>Puzzles</strong>
-                <p>2 desafios</p>
-            </div>
-            <div class="feature">
-                <div class="feature-emoji">💖</div>
-                <strong>Coleta</strong>
-                <p>Colete corações</p>
-            </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div id="loading-content">
+        <div id="loading-icon">&#9775;</div>
+        <h1 id="loading-title">Herois da Biblia 3D</h1>
+        <p id="loading-subtitle">Preparando a aventura...</p>
+        <div id="progress-container">
+          <div id="progress-bar"></div>
         </div>
-        
-        <div class="build-instructions">
-            <h2>📦 Como fazer o Build do Unity</h2>
-            <ol>
-                <li>Abra o projeto no Unity 2022.3 LTS</li>
-                <li>File → Build Settings → WebGL</li>
-                <li>Player Settings:
-                    <ul>
-                        <li>Resolution: Default Canvas Width: 1080px</li>
-                        <li>Resolution: Default Canvas Height: 1920px</li>
-                        <li>Compression: Brotli</li>
-                    </ul>
-                </li>
-                <li>Build na pasta <strong>docs/</strong></li>
-                <li>Faça commit e push para GitHub</li>
-                <li>Settings → Pages → Deploy from main/docs</li>
-            </ol>
-        </div>
-        
-        <p style="margin-top: 20px; opacity: 0.7; font-size: 0.9em;">
-            ⚠️ Após fazer o build, esta página será substituída pelo jogo
-        </p>
+        <p id="progress-text">0%</p>
+      </div>
+      <div id="loading-particles"></div>
     </div>
-    
+
+    <!-- Game Container -->
+    <div id="unity-container">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+      <div id="unity-warning"></div>
+      <!-- Floating Controls -->
+      <div id="game-controls">
+        <button id="fullscreen-btn" title="Tela cheia">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
     <script>
-        // PWA Install
-        let deferredPrompt;
-        const installButton = document.getElementById('installButton');
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installButton.classList.add('show');
-        });
-        
-        installButton.addEventListener('click', async () => {
-            if (!deferredPrompt) {
-                alert('Para instalar no iOS: toque em Compartilhar e depois "Adicionar à Tela de Início"');
-                return;
-            }
-            
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`Install prompt: ${outcome}`);
-            deferredPrompt = null;
-            installButton.classList.remove('show');
-        });
-        
-        // Registrar Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('Service Worker registrado:', reg.scope))
-                    .catch(err => console.log('Service Worker falhou:', err));
-            });
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingScreen = document.querySelector("#loading-screen");
+      const progressBar = document.querySelector("#progress-bar");
+      const progressText = document.querySelector("#progress-text");
+      const loadingSubtitle = document.querySelector("#loading-subtitle");
+
+      function unityShowBanner(msg, type) {
+        const warningBanner = document.querySelector("#unity-warning");
+        const div = document.createElement('div');
+        div.innerHTML = msg;
+        div.className = 'banner-msg ' + (type || 'info');
+        warningBanner.appendChild(div);
+        warningBanner.style.display = 'block';
+        if (type !== 'error') {
+          setTimeout(() => {
+            div.remove();
+            if (!warningBanner.children.length) warningBanner.style.display = 'none';
+          }, 5000);
         }
+      }
+
+      const buildUrl = "Build";
+      const config = {
+        arguments: [],
+        dataUrl: buildUrl + "/docs.data.gz",
+        frameworkUrl: buildUrl + "/docs.framework.js.gz",
+        codeUrl: buildUrl + "/docs.wasm.gz",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "HeroisDaBiblia3D",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // Responsive canvas sizing
+      function resizeCanvas() {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Loading messages
+      const loadingMessages = [
+        "Preparando a aventura...",
+        "Carregando mundos biblicos...",
+        "Invocando os herois...",
+        "Construindo a arca...",
+        "Atravessando o Mar Vermelho...",
+        "Quase la..."
+      ];
+
+      document.querySelector("#loading-screen").style.display = "flex";
+
+      const script = document.createElement("script");
+      script.src = buildUrl + "/docs.loader.js";
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          const pct = Math.round(100 * progress);
+          progressBar.style.width = pct + "%";
+          progressText.textContent = pct + "%";
+          const msgIndex = Math.min(Math.floor(progress * loadingMessages.length), loadingMessages.length - 1);
+          loadingSubtitle.textContent = loadingMessages[msgIndex];
+        }).then((unityInstance) => {
+          // Fade out loading screen
+          loadingScreen.style.opacity = "0";
+          setTimeout(() => { loadingScreen.style.display = "none"; }, 600);
+
+          document.querySelector("#fullscreen-btn").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          loadingSubtitle.textContent = "Erro ao carregar o jogo";
+          progressBar.style.background = "#e74c3c";
+          console.error(message);
+        });
+      };
+      document.body.appendChild(script);
+
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+      }
     </script>
-</body>
+  </body>
 </html>
