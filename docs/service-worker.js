@@ -1,4 +1,4 @@
-const CACHE_NAME = 'herois-biblia-v3.0.0';
+const CACHE_NAME = 'herois-biblia-v4.0.0';
 const urlsToCache = [
   './',
   './index.html',
