@@ -1,0 +1,22 @@
+{
+  "name": "Heróis da Bíblia 3D",
+  "short_name": "Heróis Bíblia",
+  "description": "Jogo educativo 3D com 5 mundos baseados em histórias bíblicas",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0a0a1a",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "TemplateData/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["games", "education"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "scope": "./",
+  "prefer_related_applications": false
+}

@@ -18,5 +18,25 @@ namespace HeroisDaBiblia3D
         
         /// <summary>Número total de mundos no jogo.</summary>
         public const int MaxWorlds = 5;
+
+        /// <summary>Distância atrás do jogador a partir da qual objetos são destruídos.</summary>
+        public const float DespawnBehindDistance = 15f;
+
+        /// <summary>
+        /// Retorna o Shader Standard com fallback seguro para builds.
+        /// Em builds, Shader.Find pode retornar null se o shader não foi incluído.
+        /// </summary>
+        public static Shader SafeStandardShader
+        {
+            get
+            {
+                var shader = Shader.Find("Standard");
+                if (shader == null)
+                    shader = Shader.Find("Universal Render Pipeline/Lit");
+                if (shader == null)
+                    shader = Shader.Find("Sprites/Default");
+                return shader;
+            }
+        }
     }
 }

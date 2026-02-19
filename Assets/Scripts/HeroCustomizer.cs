@@ -48,7 +48,7 @@ namespace HeroisDaBiblia3D
                 baseColor.b * skinTint.b
             );
 
-            var material = new Material(Shader.Find("Standard"));
+            var material = new Material(GameConstants.SafeStandardShader);
             material.color = finalColor;
             _renderer.material = material;
         }

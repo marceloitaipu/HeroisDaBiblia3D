@@ -44,7 +44,7 @@ Jogo educativo 3D para mobile (modo retrato) com 5 mundos baseados em histórias
 ## 🚀 Como Abrir o Projeto
 
 ### Requisitos
-- Unity 6 (6000.3.8f1) ou superior
+- Unity 6 (6000.3.9f1) ou superior
 - 2GB+ RAM disponível
 - Suporte a C# 9.0+
 

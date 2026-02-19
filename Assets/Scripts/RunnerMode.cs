@@ -97,6 +97,9 @@ namespace HeroisDaBiblia3D
                 SpawnCollectible(_nextCollectibleZ);
                 _nextCollectibleZ += 5.8f;
             }
+
+            // Remove objetos que ficaram para trás do jogador
+            CleanupBehindPlayer(currentZ);
         }
 
         void FixedUpdate()
@@ -299,6 +302,27 @@ namespace HeroisDaBiblia3D
         }
 
         /// <summary>
+        /// Remove objetos (obstáculos e coletáveis) que ficaram para trás do jogador.
+        /// Evita acúmulo de centenas de objetos em memória durante corridas longas.
+        /// </summary>
+        private void CleanupBehindPlayer(float playerZ)
+        {
+            float despawnZ = playerZ - GameConstants.DespawnBehindDistance;
+
+            foreach (var o in GameObject.FindGameObjectsWithTag("Obstacle"))
+            {
+                if (o != null && o.transform.position.z < despawnZ)
+                    Destroy(o);
+            }
+
+            foreach (var c in GameObject.FindGameObjectsWithTag("Collectible"))
+            {
+                if (c != null && c.transform.position.z < despawnZ)
+                    Destroy(c);
+            }
+        }
+
+        /// <summary>
         /// Spawna um lote de obstáculos e coletáveis à frente.
         /// </summary>
         private void SpawnBatchAhead(float range)
@@ -325,7 +349,7 @@ namespace HeroisDaBiblia3D
             go.transform.position = new Vector3(GameConstants.LanesX[lane], 0.6f, z);
             go.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            var material = new Material(Shader.Find("Standard"));
+            var material = new Material(GameConstants.SafeStandardShader);
             material.color = new Color(0.45f, 0.35f, 0.25f);
             go.GetComponent<Renderer>().material = material;
 
@@ -350,7 +374,7 @@ namespace HeroisDaBiblia3D
                 ? CollectibleType.Pergaminho
                 : CollectibleType.Coracao;
 
-            var material = new Material(Shader.Find("Standard"));
+            var material = new Material(GameConstants.SafeStandardShader);
             material.color = (collectible.type == CollectibleType.Pergaminho)
                 ? new Color(1f, 0.92f, 0.45f)  // Dourado para pergaminhos
                 : new Color(1f, 0.45f, 0.55f); // Rosa para corações

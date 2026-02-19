@@ -10,6 +10,7 @@ namespace HeroisDaBiblia3D
         Canvas _c;
         GameFlowManager _flow;
         InputRouter _input;
+        UIAnimator _animator;
 
         GameObject _home,_map,_hud,_modal,_quiz,_hero,_shop,_jonas,_moises,_jesus;
         Text _hudTitle,_coins,_virtues,_bossInfo,_result,_jesusStatus,_jonasStatus,_moisesStatus,_heroInfo,_shopInfo;
@@ -26,11 +27,12 @@ namespace HeroisDaBiblia3D
         MoisesPuzzleMode _moisesMode;
         JesusCollectMode _jesusMode;
 
+        public Canvas Canvas => _c;
         public Vector2 JoystickValue => _joy!=null ? _joy.Value : Vector2.zero;
 
-        public void Bind(GameFlowManager flow, InputRouter input)
+        public void Bind(GameFlowManager flow, InputRouter input, UIAnimator animator = null)
         {
-            _flow=flow; _input=input;
+            _flow=flow; _input=input; _animator=animator;
             _boss=FindObjectOfType<BossMode>();
             _jonasMode=FindObjectOfType<JonasPuzzleMode>();
             _moisesMode=FindObjectOfType<MoisesPuzzleMode>();
@@ -285,10 +287,19 @@ namespace HeroisDaBiblia3D
             _hudTitle.GetComponent<RectTransform>().anchorMin=new Vector2(0.04f,0); _hudTitle.GetComponent<RectTransform>().anchorMax=new Vector2(0.58f,1);
 
             _coins=Txt(top.transform,"Coins","Moedas: 0",20,FontStyle.Normal,TextAnchor.MiddleRight);
-            _coins.GetComponent<RectTransform>().anchorMin=new Vector2(0.58f,0); _coins.GetComponent<RectTransform>().anchorMax=new Vector2(0.80f,1);
+            _coins.GetComponent<RectTransform>().anchorMin=new Vector2(0.50f,0); _coins.GetComponent<RectTransform>().anchorMax=new Vector2(0.72f,1);
 
             _virtues=Txt(top.transform,"Virtues","Virtudes: 0",20,FontStyle.Normal,TextAnchor.MiddleRight);
-            _virtues.GetComponent<RectTransform>().anchorMin=new Vector2(0.80f,0); _virtues.GetComponent<RectTransform>().anchorMax=new Vector2(0.98f,1);
+            _virtues.GetComponent<RectTransform>().anchorMin=new Vector2(0.72f,0); _virtues.GetComponent<RectTransform>().anchorMax=new Vector2(0.90f,1);
+
+            // Botão Pause no HUD
+            var pauseBtn = Btn(top.transform, "Pause", "⏸", () => {
+                var pm = FindObjectOfType<PauseManager>();
+                if (pm != null) pm.TogglePause();
+            }, new Vector2(70, 70));
+            pauseBtn.GetComponent<RectTransform>().anchorMin = new Vector2(0.93f, 0.1f);
+            pauseBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.99f, 0.9f);
+            pauseBtn.GetComponent<Image>().color = new Color(0.85f, 0.30f, 0.30f, 1f);
 
             var boss=new GameObject("BossHud"); boss.transform.SetParent(_hud.transform,false);
             var br=boss.AddComponent<RectTransform>(); br.anchorMin=new Vector2(0.08f,0.82f); br.anchorMax=new Vector2(0.92f,0.90f);

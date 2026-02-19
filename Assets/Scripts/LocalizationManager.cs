@@ -115,6 +115,38 @@ namespace HeroisDaBiblia3D
             AddTranslation("skin_blue", "Skin Azul", "Blue Skin", "Skin Azul");
             AddTranslation("skin_purple", "Skin Roxa", "Purple Skin", "Skin Púrpura");
 
+            // Títulos dos mundos (HUD)
+            AddTranslation("world1_title", "Mundo 1 — Noé e a Arca", "World 1 — Noah and the Ark", "Mundo 1 — Noé y el Arca");
+            AddTranslation("world2_title", "Mundo 2 — Davi e Golias", "World 2 — David and Goliath", "Mundo 2 — David y Goliat");
+            AddTranslation("world3_title", "Mundo 3 — Jonas (Puzzle)", "World 3 — Jonah (Puzzle)", "Mundo 3 — Jonás (Rompecabezas)");
+            AddTranslation("world4_title", "Mundo 4 — Moisés (Puzzle)", "World 4 — Moses (Puzzle)", "Mundo 4 — Moisés (Rompecabezas)");
+            AddTranslation("world5_title", "Mundo 5 — Jesus (Coleta)", "World 5 — Jesus (Collect)", "Mundo 5 — Jesús (Colección)");
+
+            // Quiz
+            AddTranslation("quiz_title", "Mini-Desafio", "Mini-Challenge", "Mini-Desafío");
+            AddTranslation("quiz_noe", "Deus chamou Noé para fazer o quê?", "What did God call Noah to do?", "¿Qué le pidió Dios a Noé?");
+            AddTranslation("quiz_noe_a1", "Construir a arca", "Build the ark", "Construir el arca");
+            AddTranslation("quiz_noe_a2", "Plantar uma horta", "Plant a garden", "Plantar un huerto");
+            AddTranslation("quiz_noe_a3", "Virar rei", "Become king", "Ser rey");
+            AddTranslation("virtue_obedience", "Obediência", "Obedience", "Obediencia");
+
+            // Mensagens de gameplay
+            AddTranslation("hit_obstacle", "Você esbarrou num obstáculo. Tente de novo 😊", "You hit an obstacle. Try again 😊", "Chocaste con un obstáculo. ¡Inténtalo de nuevo 😊!");
+            AddTranslation("boss_win_msg", "Você venceu com coragem e estratégia! 🌟\nVirtudes: Coragem + Fé", "You won with courage and strategy! 🌟\nVirtues: Courage + Faith", "¡Ganaste con coraje y estrategia! 🌟\nVirtudes: Coraje + Fe");
+            AddTranslation("boss_fail_msg", "Golias te assustou, mas você pode tentar de novo 💪", "Goliath scared you, but you can try again 💪", "Goliat te asustó, pero puedes intentarlo de nuevo 💪");
+            AddTranslation("great_job", "Muito bem!", "Great job!", "¡Muy bien!");
+            AddTranslation("jonas_win_msg", "Você colocou a história na ordem certa!\nVirtude: Obediência", "You put the story in the right order!\nVirtue: Obedience", "¡Pusiste la historia en el orden correcto!\nVirtud: Obediencia");
+            AddTranslation("puzzle_fail", "Não foi essa ordem. Tente de novo 😊", "That wasn't the right order. Try again 😊", "No fue ese orden. ¡Inténtalo de nuevo 😊!");
+            AddTranslation("amazing", "Incrível!", "Amazing!", "¡Increíble!");
+            AddTranslation("moises_win_msg", "Você lembrou a sequência do milagre!\nVirtude: Fé", "You remembered the miracle sequence!\nVirtue: Faith", "¡Recordaste la secuencia del milagro!\nVirtud: Fe");
+            AddTranslation("jesus_win_msg", "Você coletou amor e bondade no caminho 💗\nVirtudes: Amor + Bondade", "You collected love and kindness along the way 💗\nVirtues: Love + Kindness", "Recolectaste amor y bondad en el camino 💗\nVirtudes: Amor + Bondad");
+
+            // Mundos bloqueados
+            AddTranslation("complete_prev_1", "Complete o Mundo 1 primeiro.", "Complete World 1 first.", "Completa el Mundo 1 primero.");
+            AddTranslation("complete_prev_2", "Complete o Mundo 2 primeiro.", "Complete World 2 first.", "Completa el Mundo 2 primero.");
+            AddTranslation("complete_prev_3", "Complete o Mundo 3 primeiro.", "Complete World 3 first.", "Completa el Mundo 3 primero.");
+            AddTranslation("complete_prev_4", "Complete o Mundo 4 primeiro.", "Complete World 4 first.", "Completa el Mundo 4 primero.");
+
             // Conquistas
             AddTranslation("achievements", "Conquistas", "Achievements", "Logros");
             AddTranslation("achievement_unlocked", "🏆 Conquista Desbloqueada!", "🏆 Achievement Unlocked!", "¡🏆 Logro Desbloqueado!");

@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = "Continue"
 
-$unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe"
+$unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.9f1\Editor\Unity.exe"
 $projectPath = $PWD.Path
 $logFile = Join-Path $projectPath "build-automated.log"
 

@@ -61,6 +61,12 @@ namespace HeroisDaBiblia3D
             _poolConfigs = new Dictionary<string, Pool>();
             _poolCounts = new Dictionary<string, int>();
 
+            if (pools == null)
+            {
+                pools = new List<Pool>();
+                Debug.LogWarning("ObjectPool: lista de pools não configurada. Inicializando vazia.");
+            }
+
             foreach (var pool in pools)
             {
                 if (pool.prefab == null)

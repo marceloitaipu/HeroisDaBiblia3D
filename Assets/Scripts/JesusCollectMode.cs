@@ -83,6 +83,9 @@ namespace HeroisDaBiblia3D
                 SpawnCollectible(_nextCollectibleZ);
                 _nextCollectibleZ += 5.5f;
             }
+
+            // Remove objetos que ficaram para trás do jogador
+            CleanupBehindPlayer(currentZ);
         }
 
         void FixedUpdate()
@@ -143,6 +146,20 @@ namespace HeroisDaBiblia3D
         }
 
         /// <summary>
+        /// Remove objetos que ficaram para trás do jogador para evitar acúmulo em memória.
+        /// </summary>
+        private void CleanupBehindPlayer(float playerZ)
+        {
+            float despawnZ = playerZ - GameConstants.DespawnBehindDistance;
+
+            foreach (var c in GameObject.FindGameObjectsWithTag("Collectible"))
+            {
+                if (c != null && c.transform.position.z < despawnZ)
+                    Destroy(c);
+            }
+        }
+
+        /// <summary>
         /// Spawna um lote de coletáveis à frente do jogador.
         /// </summary>
         /// <param name="range">Distância à frente para spawnar.</param>
@@ -172,7 +189,7 @@ namespace HeroisDaBiblia3D
             var collectible = go.AddComponent<SimpleCollectible>();
             collectible.type = CollectibleType.Coracao;
             
-            var material = new Material(Shader.Find("Standard"));
+            var material = new Material(GameConstants.SafeStandardShader);
             material.color = new Color(1f, 0.3f, 0.5f, 1f); // Rosa/vermelho para corações
             go.GetComponent<Renderer>().material = material;
             

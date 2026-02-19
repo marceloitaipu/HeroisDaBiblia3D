@@ -52,7 +52,7 @@ Os ícones são necessários para instalar no celular:
 
 ### 4️⃣ Fazer Build WebGL no Unity (15 minutos)
 
-1. Abra o projeto no Unity 6 (6000.3.8f1)
+1. Abra o projeto no Unity 6 (6000.3.9f1)
 2. File → Build Settings → WebGL
 3. Player Settings:
    - Resolution: 1080x1920

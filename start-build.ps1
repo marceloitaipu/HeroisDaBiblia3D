@@ -1,7 +1,7 @@
 # Script para iniciar build WebGL em background
 # Inicia o Unity e retorna imediatamente
 
-$unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe"
+$unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.9f1\Editor\Unity.exe"
 $projectPath = $PWD.Path
 $logFile = Join-Path $projectPath "build-automated.log"
 

@@ -207,7 +207,48 @@ namespace HeroisDaBiblia3D
                     AchievementType.FirstVictory,
                     "Primeira Vitória",
                     "Complete seu primeiro nível",
-                    50) }
+                    50) },
+
+                // Coleta (faltantes)
+                { AchievementType.Collect50Scrolls, new Achievement(
+                    AchievementType.Collect50Scrolls,
+                    "Estudioso",
+                    "Colete 50 pergaminhos",
+                    40) },
+
+                { AchievementType.Collect100Hearts, new Achievement(
+                    AchievementType.Collect100Hearts,
+                    "Coração Cheio",
+                    "Colete 100 corações",
+                    60) },
+
+                // Virtudes (faltante)
+                { AchievementType.EarnAllVirtues, new Achievement(
+                    AchievementType.EarnAllVirtues,
+                    "Santo dos Santos",
+                    "Ganhe todas as virtudes",
+                    200) },
+
+                // Boss (faltante)
+                { AchievementType.DefeatGoliathFast, new Achievement(
+                    AchievementType.DefeatGoliathFast,
+                    "Velocista da Fé",
+                    "Derrote Golias em menos de 30 segundos",
+                    120) },
+
+                // Runner (faltante)
+                { AchievementType.RunnerPerfect, new Achievement(
+                    AchievementType.RunnerPerfect,
+                    "Corrida Perfeita",
+                    "Colete todos os itens em uma corrida",
+                    100) },
+
+                // Especiais (faltante)
+                { AchievementType.PlayFor1Hour, new Achievement(
+                    AchievementType.PlayFor1Hour,
+                    "Dedicado",
+                    "Jogue por 1 hora no total",
+                    80) }
             };
         }
 

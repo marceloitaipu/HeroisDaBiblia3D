@@ -276,7 +276,7 @@ namespace HeroisDaBiblia3D
             _boss.transform.position = new Vector3(0, 2.2f, 18f);
             _boss.transform.localScale = new Vector3(2.35f, 2.35f, 2.35f);
 
-            var bossMaterial = new Material(Shader.Find("Standard"));
+            var bossMaterial = new Material(GameConstants.SafeStandardShader);
             bossMaterial.color = new Color(0.35f, 0.45f, 0.75f);
             _boss.GetComponent<Renderer>().material = bossMaterial;
 
@@ -287,7 +287,7 @@ namespace HeroisDaBiblia3D
             shield.transform.position = new Vector3(2.6f, 1.2f, 14f);
             shield.transform.localScale = new Vector3(1.6f, 2.2f, 0.6f);
 
-            var shieldMaterial = new Material(Shader.Find("Standard"));
+            var shieldMaterial = new Material(GameConstants.SafeStandardShader);
             shieldMaterial.color = new Color(0.35f, 0.35f, 0.35f);
             shield.GetComponent<Renderer>().material = shieldMaterial;
 
@@ -308,7 +308,7 @@ namespace HeroisDaBiblia3D
                 var collectible = stone.AddComponent<SimpleCollectible>();
                 collectible.type = CollectibleType.Pedra;
 
-                var stoneMaterial = new Material(Shader.Find("Standard"));
+                var stoneMaterial = new Material(GameConstants.SafeStandardShader);
                 stoneMaterial.color = new Color(0.55f, 0.55f, 0.55f);
                 stone.GetComponent<Renderer>().material = stoneMaterial;
             }

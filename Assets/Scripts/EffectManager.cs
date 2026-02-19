@@ -97,9 +97,16 @@ namespace HeroisDaBiblia3D
             }
             else
             {
-                // Pool vazio, cria um novo
-                Debug.LogWarning($"Pool '{effectType}' vazio, criando novo objeto");
-                return null;
+                // Pool vazio, tenta criar novo objeto a partir do prefab original
+                GameObject prefab = GetPrefabForEffect(effectType);
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Pool '{effectType}' vazio e sem prefab para expandir!");
+                    return null;
+                }
+
+                effect = Instantiate(prefab, transform.Find($"Pool_{effectType}"));
+                Debug.Log($"Pool '{effectType}' expandido com novo objeto");
             }
 
             effect.transform.position = position;
@@ -188,6 +195,22 @@ namespace HeroisDaBiblia3D
         }
 
         #endregion
+
+        /// <summary>
+        /// Retorna o prefab associado a um tipo de efeito.
+        /// </summary>
+        private GameObject GetPrefabForEffect(string effectType)
+        {
+            switch (effectType)
+            {
+                case "Collect": return collectEffectPrefab;
+                case "Jump": return jumpEffectPrefab;
+                case "Hit": return hitEffectPrefab;
+                case "Victory": return victoryEffectPrefab;
+                case "LevelUp": return levelUpEffectPrefab;
+                default: return null;
+            }
+        }
 
         /// <summary>
         /// Limpa todos os efeitos ativos.

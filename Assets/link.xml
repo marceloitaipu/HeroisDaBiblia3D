@@ -1,0 +1,19 @@
+<linker>
+  <!--
+    Preserve all types in Assembly-CSharp to prevent the CIL Linker
+    from encountering null module references for managed-only types.
+    This works around a Unity 6000.3.x bug where GameFlowManager
+    (and potentially other user types) appear in EditorToUnityLinkerData.json
+    with empty moduleName, causing ArgumentNullException in
+    EngineStrippingAnnotations.Mark().
+  -->
+  <assembly fullname="Assembly-CSharp" preserve="all"/>
+  <assembly fullname="UnityEngine" preserve="all"/>
+  <assembly fullname="UnityEngine.CoreModule" preserve="all"/>
+  <assembly fullname="UnityEngine.UIModule" preserve="all"/>
+  <assembly fullname="UnityEngine.AudioModule" preserve="all"/>
+  <assembly fullname="UnityEngine.PhysicsModule" preserve="all"/>
+  <assembly fullname="UnityEngine.AIModule" preserve="all"/>
+  <assembly fullname="UnityEngine.IMGUIModule" preserve="all"/>
+  <assembly fullname="UnityEngine.TextRenderingModule" preserve="all"/>
+</linker>

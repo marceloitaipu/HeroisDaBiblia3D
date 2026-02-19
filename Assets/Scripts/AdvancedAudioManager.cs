@@ -13,7 +13,7 @@ namespace HeroisDaBiblia3D
         public static AdvancedAudioManager Instance { get; private set; }
 
         [Header("Configurações")]
-        public AudioSettings settings;
+        public GameAudioSettings settings;
 
         [Header("Fontes de Áudio")]
         private AudioSource _musicSource;
@@ -82,7 +82,7 @@ namespace HeroisDaBiblia3D
             if (clip == null)
                 return;
 
-            if (!settings.enableMusic)
+            if (settings == null || !settings.enableMusic)
                 return;
 
             // Para fade anterior se houver
@@ -207,10 +207,10 @@ namespace HeroisDaBiblia3D
             if (clip == null)
                 return;
 
-            if (!settings.enableSFX)
+            if (settings == null || !settings.enableSFX)
                 return;
 
-            // Encontra uma fonte disponível
+            // Encontra uma fonte disponível usando clip == null (PlayOneShot não define isPlaying)
             AudioSource availableSource = null;
             foreach (var source in _sfxSources)
             {
@@ -225,10 +225,13 @@ namespace HeroisDaBiblia3D
             if (availableSource == null)
             {
                 availableSource = _sfxSources[0];
+                availableSource.Stop();
             }
 
             float volume = _sfxVolume * _masterVolume * Mathf.Clamp01(volumeScale);
-            availableSource.PlayOneShot(clip, volume);
+            availableSource.clip = clip;
+            availableSource.volume = volume;
+            availableSource.Play();
         }
 
         /// <summary>
